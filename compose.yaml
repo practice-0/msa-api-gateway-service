@@ -1,0 +1,6 @@
+services:
+  api-gateway-service:
+    container_name: api-gateway-service
+    image: api-gateway-service
+    ports:
+      - 8000:8080
