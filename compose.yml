@@ -8,8 +8,3 @@ services:
       JWT_SECRET: ${JWT_SECRET}
       USER_SERVICE_URL: http://user-service:8080
       BOARD_SERVICE_URL: http://board-service:8080
-
-networks:
-  default:
-    external: true
-    name: msa-net
