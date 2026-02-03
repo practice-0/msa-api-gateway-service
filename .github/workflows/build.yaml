@@ -54,6 +54,7 @@ jobs:
           script_stop: true
           script: |
             cd /home/ubuntu/msa-api-gateway-service
+            git pull origin master
             docker compose pull
             docker compose up -d
   
