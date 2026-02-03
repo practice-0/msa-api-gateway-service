@@ -43,7 +43,7 @@ jobs:
           USER_SERVICE_HOST: ${{ secrets.USER_SERVICE_HOST }}
           BOARD_SERVICE_HOST: ${{ secrets.BOARD_SERVICE_HOST }}
         with:
-          host: ${{ secrets.EC2_HOST }}
+          host: ${{ secrets.GATEWAY_SERVICE_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           envs: >
