@@ -6,5 +6,5 @@ services:
     environment:
       SERVER_PORT: 8080
       JWT_SECRET: ${JWT_SECRET}
-      USER_SERVICE_URL: http://13.209.76.169:8080
-      BOARD_SERVICE_URL: http://3.34.1.196:8080
+      USER_SERVICE_URL: http://${USER_SERVICE_HOST}:8080
+      BOARD_SERVICE_URL: http://${BOARD_SERVICE_HOST}:8080
