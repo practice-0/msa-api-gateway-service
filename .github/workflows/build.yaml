@@ -40,8 +40,7 @@ jobs:
         env:
           SERVER_PORT: 8080
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
-          USER_SERVICE_URL: ${{ secrets.ALB_BASE_URL }}
-          BOARD_SERVICE_URL: ${{ secrets.ALB_BASE_URL }}
+          INTERNAL_ALB_BASE_URL: ${{ secrets.INTERNAL_ALB_BASE_URL }}
         with:
           host: ${{ secrets.GATEWAY_SERVICE_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
@@ -49,8 +48,7 @@ jobs:
           envs: >
             SERVER_PORT,
             JWT_SECRET,
-            USER_SERVICE_URL,
-            BOARD_SERVICE_URL
+            INTERNAL_ALB_BASE_URL
           script_stop: true
           script: |
             cd /home/ubuntu/msa-api-gateway-service
