@@ -1,4 +1,4 @@
-name: gateway-service integration
+name: gateway-service deploy
 
 on:
   push:
@@ -34,34 +34,42 @@ jobs:
           tags: |
             ${{ steps.login-ecr.outputs.registry }}/board-system/gateway-service:${{ github.sha }}
             ${{ steps.login-ecr.outputs.registry }}/board-system/gateway-service:latest
+                    
+      - name: ssm command
+        run: |
+          aws ssm send-command \
+            --region ap-northeast-2 \
+            --targets "Key=tag:Service,Values=gateway-service" \
+            --document-name "AWS-RunShellScript" \
+            --parameters 'commands=["bash /home/ubuntu/msa-api-gateway-service/deploy.sh"]'
         
-      - name: ec2 SSH
-        uses: appleboy/ssh-action@v1.0.3
-        env:
-          SERVER_PORT: 8080
-          JWT_SECRET: ${{ secrets.JWT_SECRET }}
-          USER_SERVICE_URL: http://${{ secrets.USER_SERVICE_HOST }}
-          BOARD_SERVICE_URL: http://${{ secrets.BOARD_SERVICE_HOST }}
-        with:
-          host: ${{ secrets.GATEWAY_SERVICE_HOST }}
-          username: ${{ secrets.EC2_USERNAME }}
-          key: ${{ secrets.EC2_PRIVATE_KEY }}
-          envs: >
-            SERVER_PORT,
-            JWT_SECRET,
-            USER_SERVICE_URL,
-            BOARD_SERVICE_URL
-          script_stop: true
-          script: |
-            cd /home/ubuntu/msa-api-gateway-service
+      # - name: ec2 SSH
+      #   uses: appleboy/ssh-action@v1.0.3
+      #   env:
+      #     SERVER_PORT: 8080
+      #     JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      #     USER_SERVICE_URL: http://${{ secrets.USER_SERVICE_HOST }}
+      #     BOARD_SERVICE_URL: http://${{ secrets.BOARD_SERVICE_HOST }}
+      #   with:
+      #     host: ${{ secrets.GATEWAY_SERVICE_HOST }}
+      #     username: ${{ secrets.EC2_USERNAME }}
+      #     key: ${{ secrets.EC2_PRIVATE_KEY }}
+      #     envs: >
+      #       SERVER_PORT,
+      #       JWT_SECRET,
+      #       USER_SERVICE_URL,
+      #       BOARD_SERVICE_URL
+      #     script_stop: true
+      #     script: |
+      #       cd /home/ubuntu/msa-api-gateway-service
 
-            git fetch origin
-            git reset --hard origin/master
-            git clean -fd
+      #       git fetch origin
+      #       git reset --hard origin/master
+      #       git clean -fd
 
-            aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 267837905230.dkr.ecr.ap-northeast-2.amazonaws.com
-            docker compose pull
-            docker compose up -d
+      #       aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 267837905230.dkr.ecr.ap-northeast-2.amazonaws.com
+      #       docker compose pull
+      #       docker compose up -d
   
       # - name: send trigger
       #   run: |

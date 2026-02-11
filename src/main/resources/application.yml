@@ -1,5 +1,5 @@
 server:
-  port: ${SERVER_PORT}
+  port: ${SERVER_PORT:8000}
 
 spring:
   cloud:
@@ -8,12 +8,12 @@ spring:
         webflux:
           routes:
           - id: user-service
-            uri: ${USER_SERVICE_URL}
+            uri: ${USER_SERVICE_URL:http://localhost:8080}
             predicates:
             - Path=/api/users/**
 
           - id: board-service-jwt
-            uri: ${BOARD_SERVICE_URL}
+            uri: ${BOARD_SERVICE_URL:http://localhost:8081}
             predicates:
             - Path=/api/boards
             - Method=POST
@@ -21,6 +21,6 @@ spring:
             - JwtAuthenticationFilter
 
           - id: board-service
-            uri: ${BOARD_SERVICE_URL}
+            uri: ${BOARD_SERVICE_URL:http://localhost:8081}
             predicates:
             - Path=/api/boards/**
