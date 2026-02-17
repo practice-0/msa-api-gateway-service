@@ -58,5 +58,5 @@ jobs:
       - name: ASG instance refresh
         run: |
           aws autoscaling start-instance-refresh \
-            --auto-scaling-group-name gateway-service-asg \
+            --auto-scaling-group-name bs-gateway-service-asg \
             --preferences MinHealthyPercentage=100
